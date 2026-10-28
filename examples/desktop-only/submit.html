@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lumen · Request a critique</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/main.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="/">Lumen</a>
+    <nav class="mainnav">
+      <a href="/">Your photos</a>
+      <a href="#">Critiques</a>
+      <a href="#">Challenges</a>
+    </nav>
+    <input class="search" type="text" placeholder="Search photos, critics, tags">
+    <span class="avatar" title="Mika K.">MK</span>
+  </header>
+
+  <main class="form-page">
+    <h1>Request a critique</h1>
+    <p class="lede">Pick a photo and tell the critic what you want to hear about.</p>
+
+    <form class="request">
+      <div class="drop" tabindex="0">Drag a photo here</div>
+
+      <div class="two-col">
+        <label>Title<input name="title" type="text" placeholder="Harbor at 6am"></label>
+        <label>Your email<input name="email" type="text" placeholder="you@example.com"></label>
+      </div>
+
+      <div class="two-col">
+        <label>Critic
+          <select name="critic"><option>Any available critic</option><option>J. Okafor</option><option>R. Lindqvist</option><option>A. Moreau</option></select>
+        </label>
+        <label>Reply within<input name="days" type="text" placeholder="3 days"></label>
+      </div>
+
+      <fieldset>
+        <legend>Focus on <span class="tip" title="Critics score each area from 1 to 5">?</span></legend>
+        <label><input type="checkbox" checked> Composition</label>
+        <label><input type="checkbox"> Light</label>
+        <label><input type="checkbox"> Color</label>
+        <label><input type="checkbox"> Editing</label>
+      </fieldset>
+
+      <label>Notes for the critic<textarea name="notes" rows="4" placeholder="I couldn't decide on the crop..."></textarea></label>
+
+      <div class="form-actions">
+        <a href="/">Cancel</a>
+        <button class="btn" type="submit">Send request</button>
+      </div>
+    </form>
+  </main>
+
+  <div class="modal" hidden>
+    <div class="modal-box">
+      <button class="close" aria-label="Close">×</button>
+      <h2>Request sent</h2>
+      <p>A critic usually replies within 3 days. We'll email you when it's in.</p>
+    </div>
+  </div>
+</body>
+</html>

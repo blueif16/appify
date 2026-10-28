@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+  <!-- Used with cut: 0, so the engine's chrome holo covers every near-white
+       area: the die-cut edge drawn here and the face. The ink stays ink. -->
+  <circle cx="50" cy="50" r="49.5" fill="#fff"/>
+  <circle cx="50" cy="50" r="42" fill="#f8f8fa" stroke="#1d1d1f" stroke-width="3"/>
+  <circle cx="50" cy="50" r="35" fill="none" stroke="#1d1d1f" stroke-opacity=".16" stroke-width="1.5"/>
+  <g fill="none" stroke="#1d1d1f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 56V23M38 35l12-12 12 12"/>
+    <path d="M40 44h-5.5v28h31V44H60"/>
+  </g>
+</svg>

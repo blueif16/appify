@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Lumen">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script>
+    // Before first paint, so CSS can tell Home Screen apps from browser tabs.
+    if (matchMedia('(display-mode: standalone)').matches || navigator.standalone)
+      document.documentElement.classList.add('standalone');
+  </script>
+  <title>Lumen · Request a critique</title>
+  <!-- Link previews. https://lumen.example stands in for the production origin: replace it once Lumen has a domain. -->
+  <meta name="description" content="Pick a photo and tell a critic what you want to hear about.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Lumen">
+  <meta property="og:title" content="Request a critique">
+  <meta property="og:description" content="Pick a photo and tell a critic what you want to hear about.">
+  <meta property="og:url" content="https://lumen.example/submit.html">
+  <meta property="og:image" content="https://lumen.example/og/request.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A sunrise photo with crop marks next to a critique scoring composition 4/5, light 5/5 and color 3/5">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://lumen.example/submit.html">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/mobile.css">
+  <script type="module" src="/main.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="app-back" href="/" data-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>Photos</a>
+    <a class="logo" href="/">Lumen</a>
+    <nav class="mainnav">
+      <a href="/">Your photos</a>
+      <a href="#">Critiques</a>
+      <a href="#">Challenges</a>
+    </nav>
+    <input class="search" type="text" placeholder="Search photos, critics, tags">
+    <span class="avatar" title="Mika K.">MK</span>
+  </header>
+
+  <main class="form-page">
+    <h1>Request a critique</h1>
+    <p class="lede">Pick a photo and tell the critic what you want to hear about.</p>
+
+    <form class="request">
+      <label class="drop">
+        <input type="file" name="photo" accept="image/*" class="visually-hidden">
+        <img class="preview" alt="" hidden>
+        <span class="drop-text">
+          <span class="for-mouse">Drag a photo here</span>
+          <span class="for-touch"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.5-2h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="13" r="3.5"/></svg>Take or choose a photo</span>
+        </span>
+      </label>
+
+      <div class="two-col">
+        <label>Title<input name="title" type="text" placeholder="Harbor at 6am" autocomplete="off" enterkeyhint="next"></label>
+        <label>Your email<input name="email" type="email" placeholder="you@example.com" autocomplete="email" autocapitalize="none" spellcheck="false" enterkeyhint="next"></label>
+      </div>
+
+      <div class="two-col">
+        <label>Critic
+          <select name="critic"><option>Any available critic</option><option>J. Okafor</option><option>R. Lindqvist</option><option>A. Moreau</option></select>
+        </label>
+        <label>Reply within<input name="days" type="text" placeholder="3 days" inputmode="numeric" enterkeyhint="next"></label>
+      </div>
+
+      <fieldset>
+        <legend>Focus on <span class="tip" title="Critics score each area from 1 to 5">?</span><span class="hint">Critics score each area from 1 to 5.</span></legend>
+        <label><input type="checkbox" name="focus" value="composition" checked> Composition</label>
+        <label><input type="checkbox" name="focus" value="light"> Light</label>
+        <label><input type="checkbox" name="focus" value="color"> Color</label>
+        <label><input type="checkbox" name="focus" value="editing"> Editing</label>
+      </fieldset>
+
+      <label>Notes for the critic<textarea name="notes" rows="4" placeholder="I couldn't decide on the crop..." enterkeyhint="enter"></textarea></label>
+
+      <div class="form-actions">
+        <a href="/" data-back>Cancel</a>
+        <button class="btn" type="submit">Send request</button>
+      </div>
+    </form>
+  </main>
+
+  <dialog class="modal-box sheet" aria-labelledby="sent-title">
+    <form method="dialog"><button class="close" aria-label="Close">×</button></form>
+    <h2 id="sent-title">Request sent</h2>
+    <p>A critic usually replies within 3 days. We'll email you when it's in.</p>
+    <div class="install" hidden>
+      <img src="/icons/icon-192.png" alt="">
+      <p class="install-text"></p>
+      <button type="button" class="link-btn install-go" hidden>Install</button>
+      <button type="button" class="install-close" aria-label="Don't show this again">×</button>
+    </div>
+    <a class="btn sheet-done" href="/" data-back>Back to your photos</a>
+  </dialog>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="124" viewBox="0 0 120 124">
+  <!-- The studio's agent. Its eyes, brows and mouth are drawn live by
+       features/stickers.js on the dark visor, so they follow the cursor. -->
+  <defs>
+    <linearGradient id="shell" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#cdb8ff"/>
+      <stop offset=".35" stop-color="#a6f0dc"/>
+      <stop offset=".7" stop-color="#ffc1dc"/>
+      <stop offset="1" stop-color="#ffe9a6"/>
+    </linearGradient>
+    <linearGradient id="visor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2c2c33"/>
+      <stop offset="1" stop-color="#0d0d10"/>
+    </linearGradient>
+    <radialGradient id="gloss" cx=".3" cy=".18" r=".8">
+      <stop offset="0" stop-color="#fff" stop-opacity=".8"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <path d="M60 30V16" stroke="#1d1d1f" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="60" cy="11" r="7" fill="#ffd6ea" stroke="#1d1d1f" stroke-width="4"/>
+  <rect x="4" y="58" width="14" height="30" rx="5" fill="#e5e5ea" stroke="#1d1d1f" stroke-width="4"/>
+  <rect x="102" y="58" width="14" height="30" rx="5" fill="#e5e5ea" stroke="#1d1d1f" stroke-width="4"/>
+  <rect x="14" y="30" width="92" height="88" rx="30" fill="url(#shell)" stroke="#1d1d1f" stroke-width="4"/>
+  <rect x="14" y="30" width="92" height="88" rx="30" fill="url(#gloss)"/>
+  <rect x="25" y="46" width="70" height="50" rx="20" fill="url(#visor)" stroke="#1d1d1f" stroke-width="3"/>
+  <path d="M35 54c6-3 13-4 21-4" stroke="#fff" stroke-opacity=".3" stroke-width="3.5" stroke-linecap="round"/>
+  <rect x="52" y="104" width="16" height="5" rx="2.5" fill="#1d1d1f"/>
+</svg>

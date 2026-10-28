@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>appify · Same link. Feels like an app.</title>
+  <meta name="description" content="A skill and a studio that teach your coding agent to make a web app feel like an app on phones. Shared by link: no app store, no separate mobile site.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="./css/site.css">
+  <link rel="stylesheet" href="./css/stage.css">
+  <script type="module" src="./js/main.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- Shared gradients and the die-cut filter for stickers and bots. -->
+  <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="holo-a" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#ffb3d9"/><stop offset=".28" stop-color="#c3b2ff"/><stop offset=".52" stop-color="#9edcff"/><stop offset=".76" stop-color="#b6f5cf"/><stop offset="1" stop-color="#ffeaa0"/>
+      </linearGradient>
+      <linearGradient id="holo-b" x1="1" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#a8e4ff"/><stop offset=".3" stop-color="#ffc6e6"/><stop offset=".6" stop-color="#fff0b0"/><stop offset="1" stop-color="#b9f2d6"/>
+      </linearGradient>
+      <linearGradient id="holo-c" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="#cdb8ff"/><stop offset=".35" stop-color="#a6f0dc"/><stop offset=".7" stop-color="#ffc1dc"/><stop offset="1" stop-color="#ffe9a6"/>
+      </linearGradient>
+      <radialGradient id="sheen" cx=".28" cy=".22" r=".75">
+        <stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/>
+      </radialGradient>
+      <!-- The studio's agent (studio/ui/stickers/agent.svg), in its own units. -->
+      <linearGradient id="agent-shell" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#cdb8ff"/><stop offset=".35" stop-color="#a6f0dc"/><stop offset=".7" stop-color="#ffc1dc"/><stop offset="1" stop-color="#ffe9a6"/>
+      </linearGradient>
+      <linearGradient id="agent-visor" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#2c2c33"/><stop offset="1" stop-color="#0d0d10"/>
+      </linearGradient>
+      <radialGradient id="agent-gloss" cx=".3" cy=".18" r=".8">
+        <stop offset="0" stop-color="#fff" stop-opacity=".8"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+      </radialGradient>
+      <!-- White die-cut edge and a soft drop shadow, in the art's own units. -->
+      <filter id="die-cut" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+        <feMorphology in="SourceAlpha" operator="dilate" radius="7" result="grow"/>
+        <feFlood flood-color="#fff"/>
+        <feComposite in2="grow" operator="in" result="border"/>
+        <feGaussianBlur in="grow" stdDeviation="3.5" result="soft"/>
+        <feOffset in="soft" dy="4" result="drop"/>
+        <feFlood flood-color="#000" flood-opacity=".22"/>
+        <feComposite in2="drop" operator="in" result="shadow"/>
+        <feMerge><feMergeNode in="shadow"/><feMergeNode in="border"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+  </svg>
+
+  <div class="announce" data-announce>
+    <p>
+      <span class="holo-chip" aria-hidden="true"></span>
+      <span>New in the studio: holographic stickers on the bench.</span>
+      <a href="#studio">See the studio</a>
+    </p>
+    <button type="button" class="announce-close" aria-label="Dismiss announcement">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m2.5 2.5 7 7m0-7-7 7"/></svg>
+    </button>
+  </div>
+
+  <header class="nav" id="top">
+    <a class="logo" href="#top" aria-label="appify, back to top">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect width="18" height="18" fill="#000"/><rect x="5.5" y="13" width="7" height="1.6" fill="#fff"/></svg>
+      <span>appify</span>
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      <button type="button" class="nav-tab" data-sheet="studio" aria-haspopup="dialog">Studio</button>
+      <button type="button" class="nav-tab" data-sheet="skill" aria-haspopup="dialog">Skill</button>
+    </nav>
+    <div class="nav-end">
+      <a class="nav-icon" href="https://github.com/blueif16/appify" aria-label="appify on GitHub" title="GitHub">
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      </a>
+      <button type="button" class="btn btn-dark" data-get-started>Get started</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <i class="cross cross-a" aria-hidden="true"></i><i class="cross cross-b" aria-hidden="true"></i>
+      <div class="title-wrap">
+        <h1 id="hero-title" class="title"><span class="title-line">Same link.</span> <span class="title-line">Feels like an app.</span></h1>
+        <div class="bots" aria-hidden="true"></div>
+      </div>
+      <p class="sub">A skill and a studio that teach your coding agent to make a web app feel like an app on phones. Shared by link: no app store, no separate mobile site.</p>
+      <div class="hero-cta">
+        <button type="button" class="btn btn-dark btn-big" data-copy-prompt>Copy the setup prompt</button>
+        <button type="button" class="hero-link" data-sheet="skill" aria-haspopup="dialog">See the prompt</button>
+      </div>
+      <p class="hero-note" data-hero-note>Paste it into Claude Code, Codex, Cursor or any coding agent. It installs the skill and opens the studio on your machine.</p>
+    </section>
+
+    <section class="showcase" id="studio" aria-labelledby="showcase-title">
+      <h2 id="showcase-title" class="sr-only">The appify studio, step by step</h2>
+      <p class="sr-only">An animation of the studio. Lumen, a desktop-only photo app, runs off the screen on two phones. A comment is pinned on the iPhone and saved to .appify/comments.json. A coding agent reads it, moves the navigation to a bottom tab bar and saves checkpoint v2. The phones switch to Home Screen app mode, the studio shows a QR code for opening the app on a real phone, and History compares v1 with v2.</p>
+      <div class="media" data-media>
+        <div class="media-bg" aria-hidden="true">
+          <i class="mcross mcross-tl"></i><i class="mcross mcross-tr"></i><i class="mcross mcross-bl"></i><i class="mcross mcross-br"></i>
+          <div class="media-stickers"></div>
+        </div>
+
+        <div class="beats" role="group" aria-label="Walkthrough steps">
+          <ol class="beats-list"></ol>
+          <button type="button" class="beats-pause" aria-pressed="false" aria-label="Pause the animation">
+            <svg class="i-pause" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4.5 2.5v9M9.5 2.5v9"/></svg>
+            <svg class="i-play" width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><path d="M4 2.2v9.6L11.4 7Z"/></svg>
+          </button>
+        </div>
+        <p class="beat-caption" data-caption></p>
+
+        <div class="window-box" data-window-box>
+          <div class="studio" data-studio aria-hidden="true"></div>
+        </div>
+        <div class="terminal" data-terminal aria-hidden="true"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <a class="logo" href="#top" aria-label="appify, back to top">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect width="18" height="18" fill="#000"/><rect x="5.5" y="13" width="7" height="1.6" fill="#fff"/></svg>
+      <span>appify</span>
+    </a>
+    <p class="foot-line">Same link. Feels like an app.</p>
+    <nav class="foot-links" aria-label="Footer">
+      <button type="button" data-sheet="studio" aria-haspopup="dialog">Studio</button>
+      <button type="button" data-sheet="skill" aria-haspopup="dialog">Skill</button>
+      <a href="https://github.com/blueif16/appify">GitHub</a>
+    </nav>
+  </footer>
+  <span class="sr-only" role="status" data-copy-status></span>
+
+  <!-- Studio and Skill open as one full-screen sheet over the page. Clicking
+       the open tab again closes it; the other tab switches views. -->
+  <dialog class="sheet" data-sheet-dialog aria-label="appify">
+    <div class="sheet-inner">
+      <div class="sheet-top">
+        <a class="logo" href="#top" data-close aria-label="appify, back to the page">
+          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect width="18" height="18" fill="#fff"/><rect x="5.5" y="13" width="7" height="1.6" fill="#000"/></svg>
+          <span>appify</span>
+        </a>
+        <nav class="sheet-tabs" aria-label="Sections">
+          <button type="button" class="nav-tab" data-sheet="studio">Studio</button>
+          <button type="button" class="nav-tab" data-sheet="skill">Skill</button>
+        </nav>
+        <button type="button" class="sheet-close" data-close>
+          <span>Close</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m2.5 2.5 7 7m0-7-7 7"/></svg>
+        </button>
+      </div>
+
+      <section class="sheet-view" data-view="studio" aria-labelledby="sheet-studio-title" hidden>
+        <div class="sheet-main">
+          <h2 class="sheet-label" id="sheet-studio-title">The studio</h2>
+          <ul class="big-list">
+            <li><span class="big">Side by side</span><span class="big-sub">Your running app on a desktop window and several phones at once, with the room each phone really leaves after its bars.</span></li>
+            <li><span class="big">Comments</span><span class="big-sub">Pin a note on any device. It is saved to <code>.appify/comments.json</code>, and your coding agent reads it.</span></li>
+            <li><span class="big">Checkpoints</span><span class="big-sub">The code, framed screenshots and facts after every step. Compare them, or play them back in History.</span></li>
+            <li><span class="big">On my phone</span><span class="big-sub">A temporary HTTPS link and a QR code, to open the app on a real iPhone or Android.</span></li>
+          </ul>
+        </div>
+        <div class="sheet-side">
+          <div class="col">
+            <h3 class="sheet-label">Phones</h3>
+            <ul class="small-list">
+              <li>iPhone SE</li><li>iPhone 16</li><li>iPhone 17</li><li>iPhone 17 Pro Max</li><li>Galaxy S25</li><li>Pixel 9</li>
+            </ul>
+          </div>
+          <div class="col">
+            <h3 class="sheet-label">Inside each phone</h3>
+            <ul class="small-list">
+              <li>Its own user agent</li><li>Touch, and no hover</li><li>Safe areas and notch</li><li>Browser tab or Home Screen</li><li>iOS zoom on small fields</li>
+            </ul>
+          </div>
+          <div class="col">
+            <h3 class="sheet-label">Good to know</h3>
+            <ul class="small-list">
+              <li>Desktop Chrome underneath</li><li>No WebKit</li><li>No on-screen keyboard</li><li>Check on a real phone</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="sheet-view" data-view="skill" aria-labelledby="sheet-skill-title" hidden>
+        <div class="sheet-main">
+          <h2 class="sheet-label" id="sheet-skill-title">The skill · six steps, a checkpoint each</h2>
+          <ol class="big-list big-list-steps">
+            <li><span class="big-n">01</span><span class="big">Shell</span><span class="big-sub">Viewport, safe areas, overflow, scrolling, tap and hover.</span></li>
+            <li><span class="big-n">02</span><span class="big">Navigation</span><span class="big-sub">Tab bar, top bar, sheets and menus, back behavior.</span></li>
+            <li><span class="big-n">03</span><span class="big">Layout</span><span class="big-sub">Grids, sidebars, tables, cards, hover-only actions.</span></li>
+            <li><span class="big-n">04</span><span class="big">Input</span><span class="big-sub">Forms, keyboards, autofill, file and camera inputs.</span></li>
+            <li><span class="big-n">05</span><span class="big">Installable</span><span class="big-sub">Manifest, icons, service worker, install prompts.</span></li>
+            <li><span class="big-n">06</span><span class="big">Shareable</span><span class="big-sub">Link previews, the share button, deep links.</span></li>
+          </ol>
+        </div>
+        <div class="sheet-side">
+          <div class="col col-prompt">
+            <div class="col-head">
+              <h3 class="sheet-label">Setup prompt</h3>
+              <button type="button" class="btn btn-light" data-copy-prompt>Copy prompt</button>
+            </div>
+            <pre class="prompt-text" data-prompt-text tabindex="0" aria-label="Setup prompt"></pre>
+            <p class="col-note">Paste it into your coding agent, in your project's folder. It installs the <code>appify</code> command and this skill, then opens the studio. Needs Node 20+, git and Chrome.</p>
+          </div>
+          <div class="col">
+            <h3 class="sheet-label">What's inside</h3>
+            <ul class="small-list tree">
+              <li>SKILL.md</li>
+              <li>references/</li>
+              <li class="t1">app-types.md</li>
+              <li class="t1">stacks.md</li>
+              <li class="t1">platforms.md</li>
+              <li class="t1">modules/</li>
+              <li class="t2">one file per step</li>
+            </ul>
+          </div>
+          <div class="col">
+            <h3 class="sheet-label">Commands</h3>
+            <ul class="small-list mono">
+              <li>appify comments</li><li>appify snapshot</li><li>appify checkpoint</li><li>appify history</li><li>appify restore vN</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="sheet-foot">
+        <a href="https://github.com/blueif16/appify">GitHub <span aria-hidden="true">↗</span></a>
+        <span class="sheet-foot-mark" aria-hidden="true">appify</span>
+        <span>Same link. Feels like an app.</span>
+      </div>
+      <span class="sr-only" role="status" data-copy-status></span>
+    </div>
+  </dialog>
+</body>
+</html>

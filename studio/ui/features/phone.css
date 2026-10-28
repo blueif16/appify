@@ -1,0 +1,172 @@
+/* Phone panel: two short choices side by side. */
+
+.phone-panel .caption:not(:first-child) { margin-top: 12px; }
+.seg.seg-row { flex-direction: row; }
+.seg-row button { flex: 1; justify-content: center; padding: 0 6px; font-size: 12.5px; }
+
+/* On-screen keyboard. It slides up over the bottom of the screen. */
+
+.kb {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+  transform: translateY(100%);
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0s 0.25s;
+  font-family: var(--system);
+  user-select: none;
+}
+.kb.up { visibility: visible; transform: none; transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.kb .k, .kb [data-key] { cursor: pointer; }
+.kb-fill { flex: 1; }
+.kb-rows { flex: 1; display: flex; flex-direction: column; }
+.kr { flex: 1; display: flex; min-height: 0; }
+.k {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #000;
+  font-style: normal;
+  font-weight: 400;
+}
+.kh { flex: 0.5 1 0; }
+.k.blank, .k.gap { background: transparent; box-shadow: none; cursor: default; }
+.k.gap { visibility: hidden; }
+
+/* iOS */
+
+.kb.ios { background: #d2d5db; }
+.kb-accessory {
+  height: 44px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 calc(var(--kb-side, 0px) + 8px);
+  background: #f2f3f5;
+  border-top: 0.5px solid rgb(0 0 0 / 0.16);
+  border-bottom: 0.5px solid rgb(0 0 0 / 0.1);
+}
+.ka { min-width: 36px; height: 36px; display: grid; place-items: center; color: #8e8e93; font-style: normal; }
+.ka.done { padding: 0 8px; color: #007aff; font-size: 17px; font-weight: 600; }
+.kb-body {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0 calc(var(--kb-side, 0px) + 3px) var(--chin, 0px);
+}
+.kb.ios .kb-predict { height: 44px; flex: none; display: flex; align-items: center; }
+.kb.ios .kb-predict span { flex: 1; color: #000; font-size: 16px; text-align: center; }
+.kb.ios .kb-predict span + span { box-shadow: -1px 0 0 rgb(0 0 0 / 0.14); }
+.kb.ios .kb-rows { gap: 11px; padding: 4px 0 8px; }
+.kb.ios .kr { gap: 6px; }
+.kb.ios .k { border-radius: 5px; box-shadow: 0 1px 0 rgb(0 0 0 / 0.32); font-size: 22px; }
+.kb.ios .k:active { background: #b7bcc6; }
+.kb.ios .k.fn { background: #abb1bc; font-size: 16px; }
+.kb.ios .k.fn.on { background: #fff; }
+.kb.ios .k.wide { flex-grow: 1.35; }
+.kb.ios .kr.bottom .k.wide { flex-grow: 2.5; }
+.kb.ios .k.space { flex-grow: 5; font-size: 16px; }
+.kb.ios .k.enter { flex-grow: 2.5; }
+.kb.ios .k.enter.blue { background: #007aff; color: #fff; }
+.kb.ios .pad { gap: 6px; padding: 6px 0; }
+.kb.ios .pad .kr { gap: 6px; }
+.kb.ios .pad .k { flex-direction: column; font-size: 25px; line-height: 1; }
+.kb.ios .pad small { margin-top: 2px; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; }
+.kb.ios .pad .k.plain { background: transparent; box-shadow: none; }
+.kb-chin {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--chin, 0px);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 6px calc(var(--kb-side, 0px) + 24px) 0;
+  color: #50555c;
+}
+.landscape .kb.ios .k { font-size: 18px; }
+.landscape .kb.ios .kb-rows { gap: 6px; padding: 3px 0 4px; }
+.landscape .kb.ios .kb-predict { height: 36px; }
+
+/* Android (Gboard) */
+
+.kb.android { background: #eef1f7; color: #1f1f1f; }
+.kb.android .kb-predict {
+  height: 44px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  color: #444746;
+}
+.kb.android .kb-predict span { flex: 1; color: #1f1f1f; font-size: 16px; text-align: center; }
+.kb.android .kb-rows { gap: 8px; padding: 2px 5px 8px; }
+.kb.android .kr { gap: 5px; }
+.kb.android .k { position: relative; border-radius: 7px; font-size: 21px; }
+.kb.android .k:active { background: #dfe3ea; }
+.kb.android .k sup { position: absolute; top: 3px; right: 5px; color: #6f7378; font-size: 10px; }
+.kb.android .k.fn { background: #d3dbe5; font-size: 14px; font-weight: 500; }
+.kb.android .k.fn.on { background: #c2e7ff; }
+.kb.android .k.wide { flex-grow: 1.5; }
+.kb.android .k.space { flex-grow: 4.5; }
+.kb.android .k.enter { flex-grow: 1.5; border-radius: 16px; background: #c2e7ff; color: #001d35; }
+.kb.android .pad .k { font-size: 24px; }
+.kb-nav { position: relative; height: 24px; flex: none; }
+.kb-hide { position: absolute; top: 0; left: 16px; color: #444746; }
+.landscape .kb.android .k { font-size: 17px; }
+.landscape .kb.android .kb-rows { gap: 5px; padding: 2px 5px 4px; }
+.landscape .kb.android .kb-predict { height: 36px; }
+
+/* Android Back: an arrow appears where the back swipe starts. */
+
+.back-edge {
+  position: absolute;
+  top: 22%;
+  bottom: 22%;
+  z-index: 3;
+  width: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1f1f1f;
+  cursor: pointer;
+}
+.back-edge.left { left: var(--cut-side, 0px); }
+.back-edge.right { right: 0; }
+.kb.up ~ .back-edge { bottom: 55%; }
+.screen:hover .back-edge.left { background: linear-gradient(to right, rgb(0 0 0 / 0.07), transparent); }
+.screen:hover .back-edge.right { background: linear-gradient(to left, rgb(0 0 0 / 0.07), transparent); }
+.back-bubble {
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  height: 58px;
+  margin-top: -29px;
+  display: grid;
+  place-items: center;
+  background: rgb(242 242 247 / 0.96);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.22);
+  opacity: 0;
+  transition: transform 0.18s ease-out, opacity 0.18s ease-out;
+  pointer-events: none;
+}
+.back-edge.left .back-bubble { left: 0; border-radius: 0 29px 29px 0; transform: translateX(-100%); }
+.back-edge.right .back-bubble { right: 0; border-radius: 29px 0 0 29px; transform: translateX(100%); }
+.back-edge:hover .back-bubble,
+.back-edge:focus-visible .back-bubble { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .kb, .kb.up, .back-bubble { transition: none; }
+}

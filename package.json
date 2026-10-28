@@ -1,0 +1,17 @@
+{
+  "name": "appify-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "studio",
+    "examples/*",
+    "demos/*"
+  ],
+  "scripts": {
+    "studio": "node studio/bin/appify.js studio",
+    "example": "npm run dev -w examples/desktop-only",
+    "demo": "npm run dev -w demos/lumen",
+    "site:deploy": "cd site && vercel deploy --prod --yes",
+    "release": "node scripts/release.mjs"
+  }
+}

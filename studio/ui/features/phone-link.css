@@ -1,0 +1,60 @@
+.phone-link { position: relative; display: flex; padding: 6px; }
+.phone-link-button {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.phone-link-button svg { flex: none; color: var(--ink-2); }
+.phone-link-button:hover, .phone-link-button[aria-expanded='true'] { background: var(--fill); }
+.phone-link.sharing .phone-link-button { background: #000; color: #fff; }
+.phone-link.sharing .phone-link-button svg { color: #fff; }
+
+.phone-link-pop {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  width: 300px;
+  padding: 14px 14px 12px;
+  transform: translateX(-50%);
+  text-align: left;
+}
+.phone-link-pop .caption { padding: 0; margin-bottom: 10px; }
+.pl-copy { margin: 0 0 10px; color: var(--ink-2); font-size: 13px; line-height: 1.45; }
+.pl-warn { margin: 10px 0 12px; color: var(--ink); font-size: 12.5px; font-weight: 500; line-height: 1.4; }
+.pl-qr { padding: 14px; border: 1px solid var(--line); background: #fff; }
+.pl-qr svg { display: block; width: 100%; height: auto; }
+.pl-url { display: flex; gap: 6px; margin-top: 10px; }
+.pl-url code {
+  flex: 1;
+  min-width: 0;
+  padding: 0 10px;
+  overflow: hidden;
+  background: var(--fill);
+  color: var(--ink);
+  font: 400 11.5px/40px var(--mono);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  user-select: all;
+}
+.pl-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.pl-install {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 10px;
+  margin: 0 0 12px;
+  font-size: 12px;
+}
+.pl-install dt { color: var(--ink-2); }
+.pl-install dd { margin: 0; min-width: 0; }
+.pl-install code { font: 400 11px var(--mono); overflow-wrap: anywhere; }
+.pl-install a { color: var(--ink); text-underline-offset: 3px; }

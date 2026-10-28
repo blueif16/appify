@@ -1,0 +1,334 @@
+/* Lumen on phones.
+   styles.css is the desktop design and stays as it is. Everything here is either
+   invisible on desktop (env() insets are 0, touch-action, elements desktop never
+   shows) or sits behind the one phone breakpoint, or a touch capability query.
+   The phone breakpoint: (max-width: 640px), (pointer: coarse) and (max-height: 500px)
+   — narrow screens, plus phones turned sideways. Controls are at least 48px tall on phones: Android's minimum
+   (iOS asks for 44). */
+
+/* ───────────── 1. App shell ───────────── */
+
+/* Touch basics: no double-tap zoom delay, our own press state instead of the grey flash. */
+a, button, label, select, summary, [role='button'] { touch-action: manipulation; }
+@media (hover: none) {
+  a, button, label, summary, [role='button'] { -webkit-tap-highlight-color: transparent; }
+  button:active, .btn:active, [role='button']:active, .tabbar a:active { opacity: 0.6; }
+}
+
+/* iOS zooms into any field under 16px when it gets focus. */
+@media (max-width: 640px), (pointer: coarse) {
+  .search, .sort,
+  .request input[type='text'], .request input[type='email'], .request select, .request textarea { font-size: 16px; }
+}
+
+/* Landscape notch: keep content and the bar out of the side insets (0 on desktop). */
+body { padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+.topbar {
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
+}
+
+@media (max-width: 640px), (pointer: coarse) and (max-height: 500px) {
+  body { padding-top: 0; font-size: 15px; }
+
+  /* The fixed desktop header becomes a sticky one that pads under the status bar. */
+  .topbar {
+    position: sticky;
+    top: 0;
+    height: auto;
+    min-height: calc(56px + env(safe-area-inset-top, 0px));
+    gap: 4px;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .logo { display: flex; align-items: center; min-height: 48px; }
+  /* Sideways, the bars still reach the screen edges past the notch. */
+  .topbar, .sidebar {
+    margin-left: calc(-1 * env(safe-area-inset-left, 0px));
+    margin-right: calc(-1 * env(safe-area-inset-right, 0px));
+  }
+  .topbar {
+    padding-left: calc(16px + env(safe-area-inset-left, 0px));
+    padding-right: calc(12px + env(safe-area-inset-right, 0px));
+  }
+
+  /* One column instead of a 240px sidebar next to the content. */
+  .layout { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .content { padding: 20px 16px 32px; }
+  .sort { min-height: 48px; }
+
+  /* Form page: one column. */
+  .two-col { grid-template-columns: minmax(0, 1fr); }
+  .close { top: 2px; right: 2px; width: 48px; height: 48px; }
+}
+
+/* ───────────── 2. Navigation ───────────── */
+
+/* Phone-only pieces; desktop never shows them. */
+.icon-btn, .app-back, .tabbar { display: none; }
+dialog:where(.sheet) { border: 0; padding: 0; color: inherit; background: #fff; overscroll-behavior: contain; }
+.sheet::backdrop { background: rgb(15 18 25 / 0.45); }
+.icon-btn svg, .app-back svg, .tabbar svg, .search-pill svg {
+  fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+
+@media (max-width: 640px), (pointer: coarse) and (max-height: 500px) {
+  html:has(dialog[open]) { overflow: hidden; }
+
+  /* Compact top bar: logo, search, you. The nav links and "Request a critique"
+     move to the tab bar; search opens a sheet. */
+  .mainnav, .search, .topbar .btn { display: none; }
+  .icon-btn {
+    display: grid; place-items: center; width: 48px; height: 48px; margin-left: auto;
+    border: 0; border-radius: 50%; background: none; color: #1d2327;
+  }
+  .icon-btn svg { width: 24px; height: 24px; }
+  .avatar { margin-right: 4px; }
+
+  /* The request page is a task screen: back instead of the logo, no tab bar. */
+  .app-back {
+    display: flex; align-items: center; min-height: 48px; margin-left: -10px; padding-right: 8px;
+    color: #5b3df5; font-size: 17px;
+  }
+  .app-back svg { width: 26px; height: 26px; stroke-width: 2.2; }
+  .app-back ~ .logo { display: none; }
+  .app-back ~ .avatar { margin-left: auto; }
+
+  /* Bottom tab bar: the main destinations under the thumb. */
+  .tabbar {
+    position: fixed; inset: auto 0 0; z-index: 15;
+    display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+    padding: 0 env(safe-area-inset-right, 0px) max(env(safe-area-inset-bottom, 0px), 6px) env(safe-area-inset-left, 0px);
+    background: #fff;             /* solid: Safari tints its toolbar from it */
+    border-top: 1px solid #e3e5e8;
+  }
+  .tabbar a, .tabbar button {
+    display: grid; grid-template-rows: 30px auto; place-items: center; align-content: center; gap: 2px;
+    min-height: 56px; padding: 4px 0 0; border: 0; background: none;
+    font: inherit; font-size: 12px; font-weight: 500; color: #6b7378; cursor: pointer;
+  }
+  .tabbar svg { width: 24px; height: 24px; }
+  .tabbar [aria-current='page'] { color: #5b3df5; }
+  .tabbar [aria-current='page'] svg { fill: rgb(91 61 245 / 0.14); }
+  .tabbar .tab-primary { color: #5b3df5; }
+  .tab-primary svg { width: 44px; height: 30px; padding: 3px 10px; border-radius: 10px; background: #5b3df5; stroke: #fff; stroke-width: 2.4; }
+  body:has(.tabbar) { padding-bottom: calc(62px + max(env(safe-area-inset-bottom, 0px), 6px)); }
+  #critiques { scroll-margin-top: calc(72px + env(safe-area-inset-top, 0px)); }
+
+  /* Sheets: menus and popups slide up from the bottom; search drops from the top. */
+  dialog.sheet {
+    margin: auto 0 0; width: 100%; max-width: 100%; max-height: 85dvh;
+    border-radius: 16px 16px 0 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  dialog.sheet-top { margin: 0 0 auto; border-radius: 0 0 16px 16px; padding: env(safe-area-inset-top, 0px) 0 0; }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; padding: 6px 4px 0 20px; }
+  .sheet-head h2 { margin: 0; font-size: 17px; }
+  .sheet-close { width: 48px; height: 48px; border: 0; background: none; font-size: 17px; color: #6b7378; cursor: pointer; }
+  .sheet-list { display: grid; padding: 0 8px 12px; }
+  .sheet-list a { display: flex; align-items: center; min-height: 52px; padding: 0 12px; font-size: 16px; }
+  .sheet-list a + a { border-top: 1px solid #eef0f2; }
+  .sheet-search { display: flex; align-items: center; gap: 4px; padding: 8px 8px 8px 16px; }
+  .search-pill {
+    flex: 1; display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px;
+    border-radius: 12px; background: #f1f2f4; color: #6b7378;
+  }
+  .search-pill svg { flex: none; width: 20px; height: 20px; }
+  .search-pill input { flex: 1; min-width: 0; min-height: 44px; border: 0; background: none; font: inherit; font-size: 16px; color: #1d2327; outline: none; }
+  .link-btn { min-height: 48px; padding: 0 8px; border: 0; background: none; font: inherit; font-size: 16px; color: #5b3df5; cursor: pointer; }
+
+  /* "Request sent" becomes a bottom sheet. */
+  dialog.modal-box.sheet { padding: 28px 20px calc(28px + env(safe-area-inset-bottom, 0px)); border-radius: 16px 16px 0 0; }
+}
+
+@media ((max-width: 640px) or ((pointer: coarse) and (max-height: 500px))) and (prefers-reduced-motion: no-preference) {
+  dialog.sheet[open] { animation: sheet-up 0.24s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  dialog.sheet-top[open] { animation-name: sheet-down; }
+  dialog.sheet[open]::backdrop { animation: fade-in 0.24s ease-out; }
+  @view-transition { navigation: auto; }   /* cross-fade between pages, like an app */
+}
+@keyframes sheet-up { from { transform: translateY(100%); } }
+@keyframes sheet-down { from { transform: translateY(-100%); } }
+@keyframes fade-in { from { opacity: 0; } }
+
+/* ───────────── 3. Phone layout ───────────── */
+
+.more, .filter-btn, .active-filters { display: none; }
+/* Touch screens wider than a phone (tablets) keep the card actions, always shown. */
+@media (hover: none) { .actions { opacity: 1; } }
+
+@media (max-width: 640px), (pointer: coarse) and (max-height: 500px) {
+  /* Collections: a scrollable tab strip under the top bar instead of a sidebar. */
+  .sidebar { padding: 0; border-right: 0; border-bottom: 1px solid #e3e5e8; }
+  .collections {
+    display: flex; gap: 4px; overflow-x: auto;
+    padding: 0 calc(12px + env(safe-area-inset-right, 0px)) 0 calc(12px + env(safe-area-inset-left, 0px));
+    scrollbar-width: none; overscroll-behavior-x: contain;
+  }
+  .collections::-webkit-scrollbar { display: none; }
+  .collections h4 { display: none; }
+  .sidebar .collections a {
+    flex: none; align-items: center; gap: 6px; min-height: 48px; padding: 0 8px;
+    border-radius: 0; border-bottom: 2px solid transparent; color: #4a5258; font-size: 15px; white-space: nowrap;
+  }
+  .sidebar .collections a.active { background: none; color: #5b3df5; border-bottom-color: #5b3df5; }
+  .collections a span { font-size: 13px; }
+  .sidebar .filters { display: none; }          /* lives in the Filter sheet on phones */
+
+  /* Page head: title and context, then one row of tools. */
+  .page-head { flex-wrap: wrap; align-items: center; gap: 14px; }
+  .page-head > div:first-child { flex: 1 1 100%; }
+  .page-tools { flex: 1; display: flex; justify-content: space-between; gap: 8px; }
+  .filter-btn {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 0 12px 0 14px;
+    border: 1px solid #d8dbdf; border-radius: 999px; background: #fff;
+    font: inherit; font-size: 15px; font-weight: 600; color: #1d2327; cursor: pointer;
+  }
+  .filter-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  .filter-count { min-width: 20px; padding: 0 6px; border-radius: 10px; background: #5b3df5; color: #fff; font-size: 12px; line-height: 20px; text-align: center; }
+  .filter-count:empty { display: none; }
+  .sort { padding: 0 12px; border-radius: 999px; background: #fff; }
+
+  /* Active filters as removable chips (48px to tap, 32px to see). */
+  .active-filters { display: flex; flex-wrap: wrap; gap: 0 8px; margin-top: 2px; }
+  .chip { display: inline-flex; align-items: center; min-height: 48px; padding: 0; border: 0; background: none; font: inherit; cursor: pointer; }
+  .chip > span {
+    display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 8px 0 12px;
+    border-radius: 999px; background: #f1eefe; color: #5b3df5; font-size: 14px; font-weight: 600;
+  }
+  .chip svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+
+  /* Photos: two square columns, the picture edge to edge in its card. */
+  .grid { grid-template-columns: repeat(auto-fill, minmax(min(160px, calc(50% - 5px)), 1fr)); gap: 10px; margin: 8px 0 32px; }
+  .card { padding: 0; overflow: hidden; border-radius: 12px; }
+  .photo { height: auto; aspect-ratio: 1; border-radius: 0; }
+  .card h3 { margin: 8px 10px 0; font-size: 15px; }
+  .card p { margin: 2px 10px 10px; font-size: 13px; }
+
+  /* Hover-only actions → a visible ⋯ that opens an action sheet. */
+  .actions { display: none; }
+  .more {
+    position: absolute; top: 0; right: 0; display: grid; place-items: center; width: 48px; height: 48px;
+    padding: 0; border: 0; background: none; color: #fff; cursor: pointer;
+  }
+  .more svg { width: 30px; height: 30px; padding: 5px; border-radius: 50%; background: rgb(15 18 25 / 0.45); fill: currentColor; }
+
+  /* Latest critiques: one card per critique instead of a 900px table. */
+  .critiques, .critiques tbody, .critiques tr, .critiques td { display: block; }
+  .critiques thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .critiques th { font-size: 13px; }            /* screen readers only, but keep it legible */
+  .critiques { min-width: 0; width: 100%; background: none; border-radius: 0; overflow: visible; font-size: 15px; }
+  .critiques tr {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px;
+    margin-bottom: 10px; padding: 14px 16px; background: #fff; border: 1px solid #e6e8eb; border-radius: 12px;
+  }
+  .critiques td { padding: 0; border: 0; }
+  .critiques td:nth-child(1) { order: 1; flex: 1; font-weight: 600; }
+  .critiques td:nth-child(7) { order: 2; color: #8a9196; font-size: 13px; }
+  .critiques td:nth-child(2) { order: 3; flex-basis: 100%; margin-top: -4px; color: #6b7378; font-size: 14px; }
+  .critiques td:nth-child(n+3):nth-child(-n+5) {
+    order: 4; padding: 3px 8px; border-radius: 6px; background: #f4f5f7; font-size: 13px; white-space: nowrap;
+  }
+  .critiques td:nth-child(n+3):nth-child(-n+5)::before { content: attr(data-label) ' '; color: #6b7378; }
+  .critiques td:nth-child(6) { order: 5; flex-basis: 100%; margin-top: 4px; }
+
+  /* Filter sheet: the sidebar's filter list, moved in while the sheet is open. */
+  #filter-sheet .filters { display: grid; padding: 0 8px 8px; }
+  #filter-sheet h4 { display: none; }
+  #filter-sheet label { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 12px; font-size: 16px; }
+  #filter-sheet label + label { border-top: 1px solid #eef0f2; }
+  #filter-sheet input[type='checkbox'] { width: 22px; height: 22px; margin: 0; accent-color: #5b3df5; }
+
+  /* Card action sheet. */
+  .action-sheet form { display: grid; padding: 4px 8px 8px; }
+  .action-title { margin: 0; padding: 14px 12px 8px; color: #8a9196; font-size: 13px; font-weight: 600; text-align: center; }
+  .action-sheet button {
+    min-height: 52px; border: 0; border-top: 1px solid #eef0f2; background: none;
+    font: inherit; font-size: 17px; color: #5b3df5; cursor: pointer;
+  }
+  .action-sheet .cancel { margin-top: 8px; border-top: 0; border-radius: 12px; background: #f1f2f4; font-weight: 600; color: #1d2327; }
+}
+
+/* ───────────── 4. Forms and input ───────────── */
+
+/* Touch screens tap to pick a photo; mice can still drag one in. */
+@media (hover: none) { .for-mouse { display: none; } }
+@media (hover: hover) { .for-touch { display: none; } }
+.for-touch svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+
+@media (max-width: 640px), (pointer: coarse) and (max-height: 500px) {
+  /* The form runs edge to edge like a settings screen; the page title sits above it. */
+  .form-page { padding: 20px 0 0; }
+  .form-page > h1, .form-page > .lede { padding: 0 16px; }
+  .request {
+    gap: 18px; margin-top: 16px; padding: 16px 16px 0;
+    border-width: 1px 0 0; border-radius: 0;
+  }
+  .request label { gap: 8px; font-size: 13px; }
+  .request input[type='text'], .request input[type='email'], .request select, .request textarea {
+    min-height: 48px; padding: 10px 12px; border-radius: 10px; background-color: #fff;
+  }
+
+  .request .drop { height: 140px; border-radius: 12px; font-size: 16px; }
+  .for-touch { display: grid; justify-items: center; gap: 6px; }
+
+  /* Focus areas: four big toggles, two per row. The ? tooltip needs hover: show its words. */
+  fieldset { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  legend { margin-bottom: 10px; font-size: 13px; }
+  .tip { display: none; }
+  .hint { display: block; margin-top: 2px; color: #8a9196; font-weight: 400; }
+  fieldset label {
+    min-height: 48px; padding: 0 12px; border: 1px solid #d8dbdf; border-radius: 10px;
+    font-size: 15px !important; color: #1d2327;
+  }
+  fieldset label:has(:checked) { border-color: #5b3df5; background: #f6f4ff; color: #4b2fe0; }
+  fieldset input[type='checkbox'] { width: 20px; height: 20px; margin: 0; accent-color: #5b3df5; }
+
+  /* Send stays in reach: a full-width button in a bar stuck to the bottom of the screen,
+     above the home indicator. "‹ Photos" in the top bar replaces Cancel. */
+  .form-actions {
+    position: sticky; bottom: 0; z-index: 5;
+    margin: 0 -16px; padding: 12px 16px max(env(safe-area-inset-bottom, 0px), 12px);
+    background: rgb(255 255 255 / 0.94); border-top: 1px solid #eef0f2;
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  }
+  .form-actions a { display: none; }
+  .form-actions .btn { flex: 1; display: flex; justify-content: center; align-items: center; min-height: 50px; border-radius: 12px; font-size: 16px; }
+
+  /* After sending: a way back right in the sheet. */
+  .sheet-done { display: flex; justify-content: center; align-items: center; min-height: 50px; margin-top: 20px; border-radius: 12px; font-size: 16px; }
+}
+
+/* ───────────── 5. Installable ───────────── */
+
+.install[hidden] { display: none; }
+@media (max-width: 640px), (pointer: coarse) and (max-height: 500px) {
+  /* The one-time install offer inside "Request sent". */
+  .install {
+    display: grid; grid-template-columns: 44px 1fr auto auto; align-items: center; gap: 12px;
+    margin-top: 20px; padding: 10px 0 10px 12px; border-radius: 14px; background: #f4f5f7;
+  }
+  .install img { width: 44px; height: 44px; border-radius: 10px; }
+  .modal-box .install-text { font-size: 14px; line-height: 1.35; }
+  .install-text strong { display: block; color: #1d2327; font-size: 15px; }
+  .install-go { font-weight: 700; }
+  .install-close { width: 44px; height: 48px; border: 0; background: none; font-size: 22px; color: #8a9196; cursor: pointer; }
+}
+
+/* ───────────── 6. Shareable ───────────── */
+
+/* "Link copied" and friends. */
+.toast {
+  position: fixed; left: 50%; bottom: 24px; z-index: 30;
+  padding: 10px 18px; border-radius: 999px; background: #1d2327; color: #fff;
+  font-size: 14px; font-weight: 600; pointer-events: none;
+  opacity: 0; translate: -50% 12px; transition: opacity 0.2s, translate 0.2s;
+}
+.toast.show { opacity: 1; translate: -50% 0; }
+/* A shared photo link (/#night-market) lands on that photo. */
+.card { scroll-margin-top: 80px; }
+.card:target { outline: 3px solid #5b3df5; outline-offset: 3px; }
+
+@media (max-width: 640px), (pointer: coarse) and (max-height: 500px) {
+  body:has(.tabbar) .toast { bottom: calc(74px + max(env(safe-area-inset-bottom, 0px), 6px)); }
+  .card { scroll-margin-top: calc(72px + env(safe-area-inset-top, 0px)); }
+}

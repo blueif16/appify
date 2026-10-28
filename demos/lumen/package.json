@@ -1,0 +1,11 @@
+{
+  "name": "lumen-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5180 --strictPort"
+  },
+  "devDependencies": {
+    "vite": "^7.1.0"
+  }
+}

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lumen · Your photos</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/main.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="/">Lumen</a>
+    <nav class="mainnav">
+      <div class="menu">
+        <a href="#">Discover ▾</a>
+        <div class="dropdown">
+          <a href="#">Trending this week</a>
+          <a href="#">New critics</a>
+          <a href="#">Street</a>
+          <a href="#">Portrait</a>
+        </div>
+      </div>
+      <a href="#">Critiques</a>
+      <a href="#">Challenges</a>
+    </nav>
+    <input class="search" type="text" placeholder="Search photos, critics, tags">
+    <a class="btn" href="/submit.html">Request a critique</a>
+    <span class="avatar" title="Mika K.">MK</span>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h4>Collections</h4>
+      <a class="active" href="#">All photos <span>6</span></a>
+      <a href="#">Waiting for feedback <span>3</span></a>
+      <a href="#">Critiqued <span>3</span></a>
+      <a href="#">Drafts <span>0</span></a>
+      <h4>Filter</h4>
+      <label><input type="checkbox" checked> Landscape</label>
+      <label><input type="checkbox" checked> Street</label>
+      <label><input type="checkbox"> Portrait</label>
+      <label><input type="checkbox"> Night</label>
+    </aside>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1>Your photos</h1>
+          <p class="lede">6 photos, 3 waiting for feedback</p>
+        </div>
+        <select class="sort"><option>Newest first</option><option>Most critiqued</option></select>
+      </div>
+
+      <div class="grid">
+        <article class="card"><div class="photo p1"></div><div class="actions"><button>Request critique</button><button>Share</button></div><h3>Harbor at 6am</h3><p>2 critiques · Landscape</p></article>
+        <article class="card"><div class="photo p2"></div><div class="actions"><button>Request critique</button><button>Share</button></div><h3>Night market</h3><p>Waiting · Street</p></article>
+        <article class="card"><div class="photo p3"></div><div class="actions"><button>Request critique</button><button>Share</button></div><h3>Fog on the ridge</h3><p>4 critiques · Landscape</p></article>
+        <article class="card"><div class="photo p4"></div><div class="actions"><button>Request critique</button><button>Share</button></div><h3>Crosswalk</h3><p>Waiting · Street</p></article>
+        <article class="card"><div class="photo p5"></div><div class="actions"><button>Request critique</button><button>Share</button></div><h3>Last ferry</h3><p>1 critique · Night</p></article>
+        <article class="card"><div class="photo p6"></div><div class="actions"><button>Request critique</button><button>Share</button></div><h3>Window light</h3><p>Waiting · Portrait</p></article>
+      </div>
+
+      <h2>Latest critiques</h2>
+      <table class="critiques">
+        <thead>
+          <tr><th>Photo</th><th>Critic</th><th>Composition</th><th>Light</th><th>Color</th><th>Comment</th><th>Date</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Harbor at 6am</td><td>J. Okafor</td><td>4/5</td><td>5/5</td><td>3/5</td><td>Lower the horizon; the sky is doing the work.</td><td>Oct 24</td></tr>
+          <tr><td>Fog on the ridge</td><td>R. Lindqvist</td><td>5/5</td><td>4/5</td><td>4/5</td><td>Crop the left tree so the ridge line leads in.</td><td>Oct 22</td></tr>
+          <tr><td>Last ferry</td><td>A. Moreau</td><td>3/5</td><td>4/5</td><td>5/5</td><td>Lovely color; the ferry needs to be sharper.</td><td>Oct 19</td></tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
+</body>
+</html>

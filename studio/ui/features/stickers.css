@@ -1,0 +1,100 @@
+/* Cards that open from the QR and share stickers. The engine draws the
+   stickers themselves in .stickers (studio.css). */
+
+html[data-sticker-tap] .bench { cursor: pointer; }
+html[data-sticker-drag] iframe { pointer-events: none; }
+
+.sticker-card {
+  position: fixed;
+  z-index: 12;
+  transform-origin: 50% 50%;
+}
+.sticker-card:focus { outline: none; }
+
+/* QR: the sticker itself, brought closer, with the real code on a white
+   plate so a phone can read it. */
+.sc-qr { width: 300px; }
+.sc-qr-face {
+  padding: 22px;
+  border: 3px solid #1d1d1f;
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 28% 18%, rgb(255 255 255 / 0.85), transparent 50%),
+    linear-gradient(135deg, #ffb3d9, #c3b2ff 28%, #9edcff 52%, #b6f5cf 76%, #ffeaa0);
+  box-shadow:
+    0 0 0 10px #fff,
+    0 0 0 11px rgb(0 0 0 / 0.06),
+    0 24px 50px -18px rgb(0 0 0 / 0.35);
+}
+.sc-qr-plate {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  padding: 16px;
+  border: 2px solid #1d1d1f;
+  border-radius: 14px;
+  background: #fff;
+}
+.sc-qr-plate svg { display: block; width: 100%; height: auto; }
+/* Until sharing is on, the sticker's own code stands in, faded. */
+.sc-qr-ghost { width: 100%; opacity: 0.14; filter: grayscale(1); }
+.sc-wait {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--line);
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: sc-spin 0.8s linear infinite;
+}
+@keyframes sc-spin { to { transform: rotate(1turn); } }
+
+.sc-qr-foot { margin-top: 22px; padding: 12px 12px 10px; }
+.sc-qr-foot .caption { padding: 0; margin-bottom: 8px; }
+.sc-copytext { margin: 0 0 10px; color: var(--ink-2); font-size: 13px; line-height: 1.45; }
+.sc-warn { margin: 0 0 12px; color: var(--ink); font-size: 12.5px; font-weight: 500; line-height: 1.4; }
+.sc-url { display: flex; gap: 6px; }
+.sc-url code {
+  flex: 1;
+  min-width: 0;
+  padding: 0 10px;
+  overflow: hidden;
+  background: var(--fill);
+  font: 400 11.5px/40px var(--mono);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  user-select: all;
+}
+.sc-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; }
+
+/* Share: a small menu that bumps up beside the sticker. */
+.sc-share { width: 212px; padding: 10px 8px 8px; }
+.sc-share .caption { margin-bottom: 6px; }
+.sc-list { display: grid; }
+.sc-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+.sc-row svg { flex: none; color: var(--ink-2); }
+.sc-row:hover:not(:disabled) { background: var(--fill); }
+.sc-row:disabled { color: var(--ink-3); cursor: default; }
+.sc-where {
+  margin: 6px 4px 2px;
+  color: var(--ink-3);
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+.sc-where code { display: block; overflow: hidden; color: var(--ink-2); font: 400 11px/1.6 var(--mono); text-overflow: ellipsis; white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-wait { animation-duration: 2.4s; }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "desktop-only-example",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "vite --port 5173 --strictPort" },
+  "devDependencies": { "vite": "^7.1.0" }
+}
