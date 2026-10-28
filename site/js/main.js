@@ -45,6 +45,7 @@ const setupPrompt = `Set up appify in this project. appify helps you make this w
 Full instructions: ${repo}#install`;
 
 const sheet = startSheet(document.querySelector('[data-sheet-dialog]'));
+const bots = startBots(document.querySelector('.title-wrap'));
 const promptText = document.querySelector('[data-prompt-text]');
 promptText.textContent = setupPrompt;
 
@@ -57,6 +58,10 @@ for (const button of document.querySelectorAll('[data-copy-prompt]')) {
       await navigator.clipboard.writeText(setupPrompt);
       button.textContent = short ? 'Copied' : 'Copied. Paste it into your agent';
       say('Setup prompt copied to the clipboard.');
+      if (!short) {
+        burst(button);
+        bots?.cheer();
+      }
     } catch {
       // No clipboard access (http, or denied): show the prompt selected instead.
       sheet.open('skill');
@@ -73,26 +78,89 @@ for (const button of document.querySelectorAll('[data-copy-prompt]')) {
   });
 }
 
-// Get started: bring the hero's copy button into view and make it call out,
-// since copying the prompt is the first step.
-const heroCopy = document.querySelector('.hero [data-copy-prompt]');
-const heroNote = document.querySelector('[data-hero-note]');
+// Get started: the top of the page floods yellow out of the button, the
+// headline stands up in 3D and the copy button takes the stage (css/site.css).
+// Clicking Get started again, or Escape, turns it back.
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-let calling;
-document.querySelector('[data-get-started]').addEventListener('click', () => {
+const getStarted = document.querySelector('[data-get-started]');
+const heroCopy = document.querySelector('.hero [data-copy-prompt]');
+const flood = document.querySelector('[data-go-flood]');
+const isGo = () => document.body.classList.contains('is-go');
+
+// The wipe grows from the Get started button and just covers the far corner.
+function aimFlood() {
+  const f = flood.getBoundingClientRect();
+  const b = getStarted.getBoundingClientRect();
+  const x = b.left + b.width / 2 - f.left;
+  const y = b.top + b.height / 2 - f.top;
+  const r = Math.hypot(Math.max(x, f.width - x), Math.max(y, f.height - y)) + 2;
+  flood.style.setProperty('--x', `${x.toFixed(1)}px`);
+  flood.style.setProperty('--y', `${y.toFixed(1)}px`);
+  flood.style.setProperty('--r', `${Math.ceil(r)}px`);
+  // The page's dots start at the top of the document; so do the yellow's.
+  flood.style.setProperty('--dy', `${-Math.round(f.top + scrollY)}px`);
+}
+
+function setGo(on) {
+  if (on === isGo()) return;
+  aimFlood();
+  document.body.classList.toggle('is-go', on);
+  getStarted.setAttribute('aria-pressed', String(on));
+  if (!on) return;
   sheet.close();
-  const box = heroCopy.getBoundingClientRect();
-  if (box.top < 0 || box.bottom > innerHeight) heroCopy.scrollIntoView({ block: 'center', behavior: reduce.matches ? 'auto' : 'smooth' });
+  if (scrollY > 0) scrollTo({ top: 0, behavior: reduce.matches ? 'auto' : 'smooth' });
   heroCopy.focus({ preventScroll: true });
-  for (const el of [heroCopy, heroNote]) {
-    el.classList.remove('is-calling');
-    void el.offsetWidth;
-    el.classList.add('is-calling');
-  }
-  clearTimeout(calling);
-  calling = setTimeout(() => [heroCopy, heroNote].forEach((el) => el.classList.remove('is-calling')), 2600);
+  setTimeout(() => bots?.cheer(), 500);
+}
+
+getStarted.addEventListener('click', () => setGo(!isGo()));
+addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape' || !isGo() || document.querySelector('.sheet[open]')) return;
+  setGo(false);
+  getStarted.focus();
 });
+// Aimed from the start, so the first wipe doesn't slide in from a default spot.
+aimFlood();
+addEventListener('resize', aimFlood);
+
+// A copied prompt: holo bits fly out of the button and fall away.
+const bits = ['#ffb3d9', '#c3b2ff', '#9edcff', '#b6f5cf', '#ffeaa0', '#fff'];
+function burst(button) {
+  if (reduce.matches) return;
+  const box = button.getBoundingClientRect();
+  const layer = document.createElement('div');
+  layer.className = 'burst';
+  layer.style.left = `${box.left + box.width / 2}px`;
+  layer.style.top = `${box.top + box.height / 2}px`;
+  for (let i = 0; i < 30; i++) {
+    const bit = document.createElement('i');
+    const strip = i % 3 === 0;
+    const w = strip ? 4 : 6 + Math.random() * 5;
+    const h = strip ? 12 : w;
+    bit.style.width = `${w}px`;
+    bit.style.height = `${h}px`;
+    bit.style.margin = `${-h / 2}px 0 0 ${-w / 2}px`;
+    bit.style.background = bits[i % bits.length];
+    // Out from the button's face, mostly up and sideways, then down.
+    const sx = (Math.random() - 0.5) * box.width;
+    const angle = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 1.3;
+    const speed = 90 + Math.random() * 140;
+    const dx = Math.cos(angle) * speed;
+    const dy = Math.sin(angle) * speed;
+    const spin = (Math.random() - 0.5) * 720;
+    bit.animate(
+      [
+        { transform: `translate(${sx}px, 0) rotate(0deg)`, opacity: 1 },
+        { transform: `translate(${sx + dx}px, ${dy}px) rotate(${spin / 2}deg)`, opacity: 1, offset: 0.45, easing: 'cubic-bezier(0.4, 0, 1, 1)' },
+        { transform: `translate(${sx + dx * 1.4}px, ${dy + 160}px) rotate(${spin}deg)`, opacity: 0 },
+      ],
+      { duration: 1000 + Math.random() * 500, easing: 'cubic-bezier(0, 0.6, 0.4, 1)', fill: 'forwards' },
+    );
+    layer.append(bit);
+  }
+  document.body.append(layer);
+  setTimeout(() => layer.remove(), 1600);
+}
 
 startMarquee(document.querySelector('[data-marquee]'));
-startBots(document.querySelector('.title-wrap'));
 startStage(document.querySelector('[data-media]'));

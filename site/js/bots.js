@@ -7,7 +7,8 @@
 // column is scanned for the top and bottom of the ink. A bot may stand at x
 // when there is ink under its feet and nothing it would cover: no higher ink
 // on its own line, and no line above reaching down into it. So they never sit
-// on top of a letter's shape, only on its top edge.
+// on top of a letter's shape, only on its top edge. startBots returns cheer(),
+// which makes them all hop for joy.
 
 import { agentMarkup, agentParts, setFace, setEyes, ART, VIEW_W, VIEW_H } from './agent-art.js';
 
@@ -734,4 +735,21 @@ export function startBots(wrap) {
   if (new URLSearchParams(location.search).get('bots') === 'debug') {
     window.__bots = { get geo() { return geo; }, get bots() { return bots; } };
   }
+
+  // Get started, or a copied prompt: each one hops on the spot, happy.
+  function cheer() {
+    if (!geo || reduceQuery.matches) return;
+    bots.forEach((b, i) => {
+      setTimeout(() => {
+        if (!['idle', 'walk', 'peek', 'wary'].includes(b.state)) return;
+        b.mood = ['happy', 'smile'];
+        b.moodUntil = performance.now() + 900;
+        b.lean = 0;
+        b.leanT = 0;
+        hopTo(b, Math.round(b.x), { lift: 1.2 });
+        schedule();
+      }, i * 120);
+    });
+  }
+  return { cheer };
 }

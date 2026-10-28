@@ -16,6 +16,8 @@
   --panel-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 10px 30px -14px rgb(0 0 0 / 0.16);
   --holo: linear-gradient(135deg, #ffb3d9, #c3b2ff 28%, #9edcff 52%, #b6f5cf 76%, #ffeaa0);
   --gutter: clamp(16px, 4vw, 40px);
+  --nav-h: 64px;
+  --go: #ffe03d;
   color-scheme: light;
 }
 
@@ -139,7 +141,7 @@ code { font: 0.92em var(--mono); }
   align-items: center;
   gap: 40px;
   max-width: 1240px;
-  height: 64px;
+  height: var(--nav-h);
   margin: 0 auto;
   padding: 0 var(--gutter);
 }
@@ -208,7 +210,7 @@ code { font: 0.92em var(--mono); }
   letter-spacing: -0.045em;
   font-optical-sizing: auto;
 }
-.title-line { display: block; white-space: nowrap; }
+.title-line { position: relative; display: block; white-space: nowrap; }
 .bots { position: absolute; inset: 0; pointer-events: none; }
 .bot { position: absolute; top: 0; left: 0; overflow: visible; will-change: transform; }
 
@@ -229,19 +231,6 @@ code { font: 0.92em var(--mono); }
   gap: 10px 20px;
   margin-top: clamp(24px, 2.8vw, 34px);
 }
-.btn-big { height: 48px; padding: 0 22px; font-size: 15.5px; }
-.hero-link { color: var(--ink); font-size: 15px; font-weight: 500; text-underline-offset: 4px; }
-.hero-note { max-width: 34em; margin: 14px auto 0; color: var(--ink-2); font-size: 14px; line-height: 1.5; text-wrap: balance; }
-
-.hero-cta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 10px 20px;
-  margin-top: clamp(24px, 2.8vw, 34px);
-}
-.btn-big { position: relative; height: 48px; padding: 0 22px; font-size: 15.5px; }
 .hero-link {
   padding: 0;
   border: 0;
@@ -270,42 +259,182 @@ code { font: 0.92em var(--mono); }
 .marquee-row span { font-size: 16px; font-weight: 600; line-height: 24px; letter-spacing: -0.4px; white-space: nowrap; }
 @keyframes marquee-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-/* Get started: the copy button calls out with a holo frame and a sheen. */
+/* Get started: the top of the page floods yellow out of the button, the
+   headline turns white and stands up in 3D, and the copy button becomes a holo
+   sticker with a Start here tag. Clicking Get started again turns it back.
+   js/main.js sets the wipe's center and radius (--x, --y, --r) and --dy, which
+   lines the yellow's dots up with the page's. */
+
+@property --lift { syntax: '<number>'; inherits: true; initial-value: 0; }
+
+.go-flood {
+  position: absolute;
+  z-index: -1;
+  top: calc(-1 * var(--nav-h));
+  bottom: calc(-1 * clamp(32px, 3.4vw, 48px)); /* down to the showcase */
+  left: 50%;
+  width: 100vw;
+  translate: -50% 0;
+  background-color: var(--go);
+  background-image:
+    radial-gradient(circle at center, rgb(0 0 0 / 0.2) 1.1px, transparent 1.5px),
+    radial-gradient(circle at center, rgb(0 0 0 / 0.09) 0.9px, transparent 1.25px);
+  background-size: 100px 100px, 20px 20px;
+  background-position: calc(50% + 10px) var(--dy, 0), calc(50% + 10px) var(--dy, 0);
+  clip-path: circle(0 at var(--x, 100%) var(--y, 0));
+  transition: clip-path 0.6s 0.15s cubic-bezier(0.76, 0, 0.24, 1);
+  pointer-events: none;
+}
+.is-go .go-flood {
+  clip-path: circle(var(--r, 150vmax) at var(--x, 100%) var(--y, 0));
+  transition: clip-path 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* The headline: a white face with a black outline, its side (::before) a
+   stack of black copies stepped down and to the right, and a holo glint
+   (::after) that crosses the face now and then. */
+/* Turning back, the side folds away first, then the face goes black. */
+.title { transition: color 0.25s 0.22s, --lift 0.28s cubic-bezier(0.5, 0, 0.75, 0); }
+.title-line { -webkit-text-stroke: 0.03em transparent; paint-order: stroke fill; transition: -webkit-text-stroke-color 0.25s 0.22s; }
+.title-line::before,
+.title-line::after {
+  content: attr(data-text) / '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+.title-line::before {
+  --s: calc(var(--lift) * 0.0085em);
+  z-index: -1;
+  color: #000;
+  -webkit-text-stroke: 0.03em #000;
+  text-shadow:
+    calc(var(--s) * 1) calc(var(--s) * 1) 0 #000,
+    calc(var(--s) * 2) calc(var(--s) * 2) 0 #000,
+    calc(var(--s) * 3) calc(var(--s) * 3) 0 #000,
+    calc(var(--s) * 4) calc(var(--s) * 4) 0 #000,
+    calc(var(--s) * 5) calc(var(--s) * 5) 0 #000,
+    calc(var(--s) * 6) calc(var(--s) * 6) 0 #000,
+    calc(var(--s) * 7) calc(var(--s) * 7) 0 #000,
+    calc(var(--s) * 8) calc(var(--s) * 8) 0 #000,
+    calc(var(--s) * 9) calc(var(--s) * 9) 0 #000,
+    calc(var(--s) * 10) calc(var(--s) * 10) 0 #000,
+    calc(var(--s) * 13) calc(var(--s) * 16) calc(var(--s) * 6) rgb(0 0 0 / 0.22);
+  transition: opacity 0.1s 0.28s;
+}
+.title-line::after {
+  color: transparent;
+  -webkit-text-stroke: 0;
+  background: linear-gradient(100deg, transparent 40%, #ffb3d9 45%, #c3b2ff 48%, #9edcff 51%, #b6f5cf 54%, #ffeaa0 57%, transparent 62%) no-repeat;
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.is-go .title {
+  --lift: 1;
+  color: #fff;
+  transition: color 0.3s 0.2s, --lift 0.8s 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.is-go .title-line { -webkit-text-stroke-color: #000; transition-delay: 0.2s; }
+.is-go .title-line::before { opacity: 1; transition: opacity 0.1s 0.2s; }
+.is-go .title-line::after { opacity: 1; animation: go-glint 5s 1.3s ease-in-out infinite; }
+.is-go .title-line + .title-line::after { animation-delay: 1.45s; }
+@keyframes go-glint {
+  0% { background-position: 100% 0; }
+  32%, 100% { background-position: 0% 0; }
+}
+
+/* The copy button: the holo fill and sheen (::before) fade in over the black,
+   a hard black shadow lifts it off the page, a ring (::after) pings out. */
+.cta-spot { position: relative; display: inline-flex; }
+.btn-big {
+  position: relative;
+  isolation: isolate;
+  height: 48px;
+  padding: 0 22px;
+  font-size: 15.5px;
+  transition: color 0.25s, box-shadow 0.25s, translate 0.25s;
+}
 .btn-big::before,
 .btn-big::after { content: ''; position: absolute; pointer-events: none; opacity: 0; }
 .btn-big::before {
-  inset: -7px;
-  padding: 3px;
-  background: var(--holo);
-  background-size: 220% 220%;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-}
-.btn-big::after {
   inset: 0;
-  background: linear-gradient(105deg, transparent 38%, rgb(255 255 255 / 0.32) 50%, transparent 62%) no-repeat;
-  background-size: 250% 100%;
+  z-index: -1;
+  background:
+    linear-gradient(105deg, transparent 38%, rgb(255 255 255 / 0.75) 50%, transparent 62%) no-repeat,
+    var(--holo);
+  background-size: 250% 100%, 220% 220%;
+  background-position: 120% 0, 0% 0%;
+  transition: opacity 0.2s;
 }
-.btn-big.is-calling { animation: call-bump 2.4s ease-out; }
-.btn-big.is-calling::before { animation: call-ring 2.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
-.btn-big.is-calling::after { animation: call-sheen 1.1s 0.15s ease-in-out 2; }
-.hero-note.is-calling { color: var(--ink); }
-@keyframes call-ring {
-  0% { opacity: 0; inset: 0; background-position: 0% 50%; }
-  12% { opacity: 1; inset: -9px; }
-  30% { inset: -6px; }
-  48% { inset: -10px; }
-  70% { opacity: 1; inset: -7px; }
-  100% { opacity: 0; inset: -7px; background-position: 100% 50%; }
+.btn-big::after { inset: 0; border: 2px solid #000; }
+.is-go .hero .btn-big {
+  color: #000;
+  box-shadow: 0 0 0 2px #000, 6px 6px 0 2px #000;
+  translate: -3px -3px;
+  transition-delay: 0.4s;
+  animation: go-pop 0.6s 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
 }
-@keyframes call-bump {
-  0%, 30%, 64%, 100% { transform: none; }
-  12% { transform: translateY(-2px) scale(1.04); }
-  48% { transform: translateY(-1px) scale(1.02); }
+.is-go .hero .btn-big:hover { background: #000; box-shadow: 0 0 0 2px #000, 8px 8px 0 2px #000; translate: -4px -4px; transition-delay: 0s; }
+.is-go .hero .btn-big:active { box-shadow: 0 0 0 2px #000, 0 0 0 2px #000; translate: 2px 2px; transition-duration: 0.06s; }
+.is-go .hero .btn-big::before { opacity: 1; transition-delay: 0.4s; animation: go-shine 3.6s 1.2s ease-in-out infinite; }
+.is-go .hero .btn-big::after { animation: go-ping 2.4s 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) infinite; }
+@keyframes go-pop {
+  0% { scale: 1; }
+  45% { scale: 1.12; }
+  100% { scale: 1; }
 }
-@keyframes call-sheen {
-  0% { opacity: 1; background-position: 120% 0; }
-  100% { opacity: 1; background-position: -20% 0; }
+@keyframes go-shine {
+  0% { background-position: 120% 0, 0% 0%; }
+  28% { background-position: -20% 0, 40% 40%; }
+  100% { background-position: -20% 0, 100% 100%; }
 }
+@keyframes go-ping {
+  0% { opacity: 0.9; inset: 0; }
+  60%, 100% { opacity: 0; inset: -16px -18px; }
+}
+
+/* Start here: a sticker slapped on the button's corner. */
+.go-tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  padding: 5px 8px 4px;
+  background: #fff;
+  color: #000;
+  box-shadow: 0 0 0 1.5px #000, 2px 3px 0 1.5px #000;
+  font: 600 11px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  translate: -34% -72%;
+  rotate: -7deg;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.is-go .go-tag { opacity: 1; animation: go-slap 0.5s 0.85s cubic-bezier(0.3, 1.5, 0.5, 1) backwards; }
+@keyframes go-slap {
+  from { opacity: 0; scale: 1.9; rotate: -20deg; }
+}
+
+/* The rest of the yellow: black text, darker hovers, and Get started pressed. */
+.marquee-row li, .cross { transition: opacity 0.3s 0.2s, filter 0.3s 0.2s; }
+.is-go .hero-note { color: #000; }
+.is-go .cross { filter: brightness(0); opacity: 0.45; }
+.is-go .marquee-row li { opacity: 0.75; }
+.is-go .nav-tab:hover, .is-go .nav-icon:hover { background: rgb(0 0 0 / 0.07); }
+.btn-go { gap: 8px; transition: background-color 0.25s, color 0.25s, box-shadow 0.25s; }
+.go-x { display: none; flex: none; }
+.is-go .btn-go, .is-go .btn-go:hover { background: #fff; color: #000; box-shadow: inset 0 0 0 2px #000; }
+.is-go .go-x { display: block; }
+
+/* A copied prompt: holo bits fly out of the button (js/main.js). */
+.burst { position: fixed; z-index: 50; width: 0; height: 0; pointer-events: none; }
+.burst i { position: absolute; left: 0; top: 0; box-shadow: 0 0 0 1px #000; }
 
 /* 4. The showcase sits in stage.css. Footer: */
 
@@ -484,7 +613,8 @@ html:has(.sheet[open]) { overflow: hidden; }
 }
 
 @media (max-width: 720px) {
-  .nav { gap: 12px; height: 56px; }
+  :root { --nav-h: 56px; }
+  .nav { gap: 12px; }
   .nav-tab { padding: 8px; }
   .announce { justify-content: flex-start; padding: 8px 44px 8px 16px; }
   .announce p { justify-content: flex-start; text-align: left; }
@@ -497,7 +627,7 @@ html:has(.sheet[open]) { overflow: hidden; }
 }
 
 @media (max-width: 560px) {
-  .hero-cta .btn-big { width: 100%; }
+  .cta-spot, .hero-cta .btn-big { width: 100%; }
   .prompt-text { max-height: 260px; padding: 12px; }
   .big { font-size: clamp(36px, 11vw, 46px); }
   .big-list-steps .big { font-size: clamp(30px, 9vw, 40px); }
@@ -512,7 +642,10 @@ html:has(.sheet[open]) { overflow: hidden; }
   .holo-chip { animation: none; }
   .marquee-track { animation: none; }
   .sheet[open], .sheet.is-closing, .sheet-view > * { animation: none; }
-  .btn-big.is-calling { animation: none; }
-  .btn-big.is-calling::after { animation: none; }
-  .btn-big.is-calling::before { animation: none; opacity: 1; inset: -7px; }
+  /* Get started: the yellow fades in instead of wiping; the rest just switches. */
+  .go-flood, .is-go .go-flood { clip-path: none; opacity: 0; transition: opacity 0.2s; }
+  .is-go .go-flood { opacity: 1; }
+  .title, .title-line, .title-line::before, .btn-big, .btn-big::before,
+  .is-go .title, .is-go .title-line, .is-go .title-line::before, .is-go .hero .btn-big, .is-go .hero .btn-big::before { transition-duration: 0.01s; transition-delay: 0s; }
+  .is-go .hero .btn-big, .is-go .hero .btn-big::before, .is-go .hero .btn-big::after, .is-go .title-line::after, .is-go .go-tag { animation: none; }
 }
