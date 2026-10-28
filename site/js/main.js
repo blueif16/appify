@@ -1,4 +1,5 @@
 import { startBots } from './bots.js';
+import { startMarquee } from './marquee.js';
 import { startSheet } from './sheet.js';
 import { startStage } from './stage.js';
 
@@ -92,5 +93,6 @@ document.querySelector('[data-get-started]').addEventListener('click', () => {
   calling = setTimeout(() => [heroCopy, heroNote].forEach((el) => el.classList.remove('is-calling')), 2600);
 });
 
+startMarquee(document.querySelector('[data-marquee]'));
 startBots(document.querySelector('.title-wrap'));
 startStage(document.querySelector('[data-media]'));
